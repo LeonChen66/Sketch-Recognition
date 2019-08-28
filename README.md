@@ -1,1 +1,7 @@
 # Sketch-Recognition
+
+Sketch recognition is the automated recognition of hand-drawn diagrams by a computer. Research in sketch recognition lies at the crossroads of Artificial Intelligence and Human Computer Interaction. Recognition algorithms usually are gesture-based, appearance-based, geometry-based, or a combination thereof.  
+
+Sketch recognition is a growing topic of interest to many people as graphical diagrams pervade education, business, design and many other domains. Students draw diagrams in fields as varied as business, math, computer science, engineering, music, and many others. Hand-sketched student diagrams aid in active learning and creative processes.   
+
+This course is an introduction to sketch recognition algorithms and their uses.  Students will learn about a myriad of sketch recognition algorithms that rely on drawing style, geometry, context, timing, bitmap, and other features, and the techniques used to recognize sketches from these features including rule-based, template-matching, linear and quadratic, HMM, Bayesian Network and other based classification algorithms.  User interface techniques and issues will also be addressed, such as beautification and editing of diagrams. Students will walk away with an overall understanding of the pitfalls and advantages of the different techniques and features as well as detailed implementation notes as to how to implement them. 
