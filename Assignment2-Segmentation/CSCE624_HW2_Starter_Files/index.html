@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Homework 2 Starter</title>
+	<link rel="shortcut icon" href="about:blank">
+	<script type="module">
+		import { segment } from '/segment.mjs';
+		window.segment = segment; // Set to global scope
+	</script>
+	<script type="text/javascript">
+	// Globals
+	sketches = [];
+	getSketches();
+
+	function updateCanvases() {
+		let sketch = sketches[parseInt(document.getElementById('sketches').value)];
+		updateCanvas('sketch1', sketch); // Select the sketch selected from global dictionary
+
+		let newSketch = JSON.parse(JSON.stringify(sketch));
+		newSketch.substrokes = [];
+		for (let stroke of newSketch.strokes) {
+			newSketch.substrokes = newSketch.substrokes.concat(segment(stroke.points));
+		}
+		for (let stroke of sketch.substrokes) { // Some of the sketches have substrokes w/o a parent that I think are really a parent stroke
+			if (!stroke.parent) {
+				newSketch.substrokes = newSketch.substrokes.concat(segment(stroke.points));
+			}
+		}
+
+
+		updateCanvas('sketch2', newSketch);
+	}
+
+	// Draw data on update of sketch selection
+	function updateCanvas(id, sketch) {
+		var c = document.getElementById(id);
+		var ctx = c.getContext("2d");
+		ctx.canvas.width = parseInt(window.getComputedStyle(c).getPropertyValue('width'));
+		ctx.canvas.height = parseInt(window.getComputedStyle(c).getPropertyValue('height'));
+
+		// Clear canvas first
+		ctx.clearRect(0,0,c.width,c.height);
+
+		let minX = 1000000;
+		let minY = 1000000;
+		let maxX = 0;
+		let maxY = 0;
+		for (let point of sketch.points) {
+			minX = Math.min(minX, point.x);
+			maxX = Math.max(maxX, point.x);
+			minY = Math.min(minY, point.y);
+			maxY = Math.max(maxY, point.y);
+		}
+
+		let xOffset = minX;
+		let yOffset = minY;
+		let ratio = Math.min(ctx.canvas.width / (2*(maxX - minX)), ctx.canvas.height / (2*(maxY - minY)));
+
+		for (let substroke of sketch.substrokes) {
+			let points = substroke.points || substroke;
+
+			ctx.beginPath();
+			ctx.lineWidth = "5";
+			ctx.strokeStyle = "#"+((1<<24)*Math.random()|0).toString(16); // Randomize stroke colors for easy visualization
+
+			for (let i = 0; i < points.length; i++) { // Set path to point values
+				if (i === 0) {
+					ctx.moveTo((points[i].x - xOffset)*ratio + 0.25*ctx.canvas.width, (points[i].y - yOffset)*ratio + 0.25*ctx.canvas.height);
+				}
+				else {
+					ctx.lineTo((points[i].x - xOffset)*ratio + 0.25*ctx.canvas.width, (points[i].y - yOffset)*ratio + 0.25*ctx.canvas.height);
+				}
+			}
+
+			ctx.stroke();  // Draw it
+		}
+	}
+
+	// Load data, populating global dictionary of sketch objects and selection list for viewing ease
+	function getSketches() {
+		fetch("/getSketches")
+		.then(res => {
+			return res.json();
+		})
+		.then(data => {
+			sketches = data;
+			for (let i = 0; i < sketches.length; i++) {
+				let option = document.createElement('option');
+				option.value = i;
+				option.text = i;
+				document.getElementById('sketches').appendChild(option);
+			}
+		});
+	}
+	</script>
+</head>
+<!-- The body consists simply of a canvas for drawing and a selection list; this display is for the user's benefit, not required -->
+<body style="margin:0">
+	<select id="sketches" size="2" style="display: inline-block; width: 20vw; height: 98vh; border: 0;" onchange="updateCanvases()"></select>
+	<canvas id="sketch1" style="display: inline-block; width: 38vw; height: 98vh; border-right: 2px solid black">
+		Your browser does not support the HTML5 canvas tag.
+	</canvas>
+	<canvas id="sketch2" style="display: inline-block; width: 38vw; height: 98vh">
+		Your browser does not support the HTML5 canvas tag.
+	</canvas>
+	<div style="position: absolute; top: 0; left: 35vw;">Existing substrokes</div>
+	<div style="position: absolute; top: 0; left: 75vw;">Your substrokes</div>
+</div>
+
+</body>
+</html>
