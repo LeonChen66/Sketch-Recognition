@@ -13,7 +13,7 @@ class sketchGUI():
     def __init__(self):
         super().__init__()
         root = Tk()
-        root.geometry('300x200')
+        root.geometry('400x300')
         root.title('SketchShop')
         openBotton = Button(root, text='Open', command=lambda: self.open_file())
         runBotton = Button(
@@ -21,7 +21,9 @@ class sketchGUI():
         # GANBotton = Button(
             # root, text='GAN', command=lambda: keyboard.press_and_release('q'))
         label = Label(
-            root, text="When finishing drawing, Press q to continue", relief=FLAT)
+            root, text="1. Click Open to open the image to be processed. \n\
+2. Click Run to draw on image. \n\
+3. When finishing drawing, Press q to continue", relief=FLAT)
         openBotton.pack(side=TOP, pady=10)
         runBotton.pack(side=TOP, pady=10)
         label.pack(side=TOP,pady=10)
