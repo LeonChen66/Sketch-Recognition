@@ -21,6 +21,10 @@ python sketchshop_GUI.py
 ```
 to open the GUI for this program
 
+1. Click Open to open the image to be processed.  
+2. Click Run to draw on image.  
+3. When finishing drawing, Press q to continue"
+
 ### Citation
 pix2pix cited from 
 ```
