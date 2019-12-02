@@ -18,6 +18,7 @@ mode = False  # if True, draw rectangle. Press 'm' to toggle to curve
 ix, iy = -1, -1
 mouse_travel = [[], []]
 img = []
+desired = 700**2
 
 # mouse callback function
 def draw_line(event, x, y, flags, param):
@@ -47,11 +48,14 @@ def draw_line(event, x, y, flags, param):
             cv2.line(img, (ix, iy), (x, y),
                      color=(0, 0, 0), thickness=3)
 
-# draw sketch main function
+
 def draw_sketch(img_path):
     # img = np.ones((512, 512, 3), np.uint8) * 255
     global img
     img = cv2.imread(img_path)
+    rescale = (desired/(img.shape[0]*img.shape[1]))**0.5
+    img = cv2.resize(img, (int(img.shape[1]*rescale), int(img.shape[0]*rescale)))
+    # print(img.shape)
     cv2.namedWindow('image', cv2.WINDOW_NORMAL)
     cv2.setMouseCallback('image', draw_line)
 
@@ -67,8 +71,8 @@ def draw_sketch(img_path):
 
     cv2.destroyAllWindows()
 
-# remove background by adjusting transparency
-def remove_background(img_path='pytorch-CycleGAN-and-pix2pix/results/edges2handbags_pretrained/test_latest/images/test_fake_B.png',thres=127):
+
+def remove_background(img_path='./pytorch-CycleGAN-and-pix2pix/results/edges2handbags_pretrained/test_latest/images/test_fake_B.png',thres=127):
     src = cv2.imread(img_path)
     tmp = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
     _, alpha = cv2.threshold(tmp, thres, 255, cv2.THRESH_BINARY_INV)
@@ -78,8 +82,9 @@ def remove_background(img_path='pytorch-CycleGAN-and-pix2pix/results/edges2handb
     cv2.imwrite("test.png", dst)
     return dst
 
-# blend two images from scratch
+
 def blend_imgs(src, dst, x_shift, y_shift):
+
     for x in range(dst.shape[1]):
         for y in range(dst.shape[0]):
             if dst[y, x, 3] != 0:
@@ -132,15 +137,18 @@ def main():
     os.chdir('..')
 
     # remove background, transform back to origin size and ps
-    dst = remove_background(thres=200)
+    dst = remove_background(thres=231)
     dst = cv2.resize(dst, (int((x_max-x_min)*1.3), int((y_max-y_min)*1.3)))
     src = cv2.imread(input_path)
+    rescale = (desired/(src.shape[0]*src.shape[1]))**0.5
+    src = cv2.resize(src, (int(src.shape[1]*rescale), int(src.shape[0]*rescale)))
     final = blend_imgs(src, dst, x_shift=x_min -
                        int(x_range*0.1), y_shift=y_min-int(y_range*0.1))    
 
     # save and show the final result
     cv2.imwrite(output_path,final)
-    cv2.startWindowThread()
+
+    # cv2.startWindowThread()
     cv2.namedWindow('sketchshop', cv2.WINDOW_NORMAL)
     cv2.imshow('sketchshop', final)
     cv2.waitKey(0)
