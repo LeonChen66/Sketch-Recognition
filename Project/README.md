@@ -2,7 +2,7 @@
 Final project for Sketch Recognition.
 
 ### Motivation
-Photo editing exists everywhere in our daily life from the advertisements to robust conference papers. We will design a website system called SketchShop which allows users the add some vivid icons on her photos by just few simple sketches. We adopt GAN to do style transfer on the sketch from users and mask the output on the photos uploaded by users.
+Photo editing exists everywhere in our daily life from the advertisements to robust conference papers. We design a program called SketchShop which allows users the add some vivid icons on her photos by just few simple sketches. We adopt GAN to do style transfer on the sketch from users and mask the output on the photos uploaded by users.
 
 ### Requirement
 * opencv
