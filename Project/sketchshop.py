@@ -34,7 +34,7 @@ def draw_line(event, x, y, flags, param):
                 cv2.rectangle(img,(ix,iy),(x,y),(0,255,0),-1)
             else:
                 cv2.line(img, (ix, iy), (x, y),
-                         color=(0, 0, 0), thickness=3)
+                         color=(0, 0, 0), thickness=1)
                 ix, iy = x, y
                 mouse_travel[0][-1].append(ix)
                 mouse_travel[1][-1].append(iy)
@@ -121,7 +121,7 @@ def main():
     for i in range(len(x_list)):
         for j in range(1, len(x_list[i])):
             cv2.line(sketch, (x_list[i][j-1]-int(x_min) + int(x_range*0.1), y_list[i][j-1]-int(y_min) + int(y_range*0.1)),
-                     (x_list[i][j]-int(x_min) + int(x_range*0.1), y_list[i][j]-int(y_min) + int(y_range*0.1)), color=(0, 0, 0), thickness=3)
+                     (x_list[i][j]-int(x_min) + int(x_range*0.1), y_list[i][j]-int(y_min) + int(y_range*0.1)), color=(0, 0, 0), thickness=1)
 
     sketch = cv2.resize(sketch, (256, 256))
 

@@ -7,7 +7,7 @@ from tkinter import messagebox
 # from class filedialog
 from tkinter.filedialog import askopenfilename
 import os
-import keyboard
+# import keyboard
 
 class sketchGUI():
     def __init__(self):
