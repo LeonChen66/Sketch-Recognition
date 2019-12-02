@@ -47,7 +47,7 @@ def draw_line(event, x, y, flags, param):
             cv2.line(img, (ix, iy), (x, y),
                      color=(0, 0, 0), thickness=3)
 
-
+# draw sketch main function
 def draw_sketch(img_path):
     # img = np.ones((512, 512, 3), np.uint8) * 255
     global img
@@ -67,8 +67,8 @@ def draw_sketch(img_path):
 
     cv2.destroyAllWindows()
 
-
-def remove_background(img_path='/Users/leonchen/Desktop/TAMU Courses/Sketch-Recognition/Project/pytorch-CycleGAN-and-pix2pix/results/edges2handbags_pretrained/test_latest/images/test_fake_B.png',thres=127):
+# remove background by adjusting transparency
+def remove_background(img_path='pytorch-CycleGAN-and-pix2pix/results/edges2handbags_pretrained/test_latest/images/test_fake_B.png',thres=127):
     src = cv2.imread(img_path)
     tmp = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
     _, alpha = cv2.threshold(tmp, thres, 255, cv2.THRESH_BINARY_INV)
@@ -78,9 +78,8 @@ def remove_background(img_path='/Users/leonchen/Desktop/TAMU Courses/Sketch-Reco
     cv2.imwrite("test.png", dst)
     return dst
 
-
+# blend two images from scratch
 def blend_imgs(src, dst, x_shift, y_shift):
-
     for x in range(dst.shape[1]):
         for y in range(dst.shape[0]):
             if dst[y, x, 3] != 0:
@@ -134,14 +133,13 @@ def main():
 
     # remove background, transform back to origin size and ps
     dst = remove_background(thres=200)
-    dst = cv2.resize(dst, (int((y_max-y_min)*1.3), int((x_max-x_min)*1.3)))
+    dst = cv2.resize(dst, (int((x_max-x_min)*1.3), int((y_max-y_min)*1.3)))
     src = cv2.imread(input_path)
     final = blend_imgs(src, dst, x_shift=x_min -
                        int(x_range*0.1), y_shift=y_min-int(y_range*0.1))    
 
     # save and show the final result
     cv2.imwrite(output_path,final)
-
     cv2.startWindowThread()
     cv2.namedWindow('sketchshop', cv2.WINDOW_NORMAL)
     cv2.imshow('sketchshop', final)

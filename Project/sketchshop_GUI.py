@@ -1,3 +1,7 @@
+"""
+This is the GUI for our sketch recognition project - SketchShop.
+The main function is sketchshop.py
+"""
 # importing tkinter and tkinter.ttk
 # and all their functions and classes
 from tkinter import *
