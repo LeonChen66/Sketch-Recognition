@@ -1,5 +1,5 @@
 """
-This is the GUI for our sketch recognition project - SketchShop.
+This is the GUI for our sketch recognition project - SketchShop build by thkinter.
 The main function is sketchshop.py
 """
 # importing tkinter and tkinter.ttk
@@ -11,6 +11,7 @@ from tkinter import messagebox
 # from class filedialog
 from tkinter.filedialog import askopenfilename
 import os
+import sys
 # import keyboard
 
 class sketchGUI():
@@ -19,9 +20,9 @@ class sketchGUI():
         root = Tk()
         root.geometry('400x300')
         root.title('SketchShop')
+        self.file_path = ""
         openBotton = Button(root, text='Open', command=lambda: self.open_file())
-        runBotton = Button(
-            root, text='Run', command=lambda: self.run_sketchshop(self.file_path))
+        runBotton = Button(root, text='Run', command=lambda: self.run_sketchshop())
         # GANBotton = Button(
             # root, text='GAN', command=lambda: keyboard.press_and_release('q'))
         label = Label(
@@ -32,7 +33,6 @@ class sketchGUI():
         runBotton.pack(side=TOP, pady=10)
         label.pack(side=TOP,pady=10)
         # GANBotton.pack(side=TOP, pady=10)
-        self.filepath = ""
         mainloop()
 
     # This function will be used to open file
@@ -41,13 +41,13 @@ class sketchGUI():
         self.file_path = self.file_path.replace(' ', '\ ')
 
     # Run the main program for sketchshop
-    def run_sketchshop(self, file_path):
-        if not self.file_path:
+    def run_sketchshop(self):
+        if self.file_path=="":
             messagebox.showerror("Error", "No Input File, please open the file first")
 
-        output_path = os.path.splitext(file_path)[0]+'_output.jpg'
-        os.system('python sketchshop.py -i {} -o {}'.format(file_path, output_path))
-
+        output_path = os.path.splitext(self.file_path)[0]+'_output.jpg'
+        os.system('python sketchshop.py -i {} -o {}'.format(self.file_path, output_path))
 
 if __name__ == "__main__":
+    os.chdir('/'.join(sys.argv[0].split('/')[:-1]))
     sketchshop = sketchGUI()
