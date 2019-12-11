@@ -1,5 +1,5 @@
 """
-This is the GUI for our sketch recognition project - SketchShop build by thkinter.
+This is the GUI for our sketch recognition project - SketchShop build by
 The main function is sketchshop.py
 """
 # importing tkinter and tkinter.ttk
@@ -49,5 +49,5 @@ class sketchGUI():
         os.system('python sketchshop.py -i {} -o {}'.format(self.file_path, output_path))
 
 if __name__ == "__main__":
-    os.chdir('/'.join(sys.argv[0].split('/')[:-1]))
+    # os.chdir('/'.join(sys.argv[0].split('/')[:-1]))   # For pyinstaller code
     sketchshop = sketchGUI()
